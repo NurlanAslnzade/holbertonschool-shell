@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #csad
 a=1
-while [ $a -le 10]
+while [ $a -le 10 ]  # Corrected: space before closing bracket
 do
     echo "Best School"
-    if [ $a -eq 9 ]; then
+    if [ $a -eq 9 ]; then  # Use -eq for numeric comparison
         echo "Hi"
     fi
     a=$((a + 1))
