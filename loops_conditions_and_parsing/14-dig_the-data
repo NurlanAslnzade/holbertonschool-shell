@@ -1,3 +1,17 @@
 #!/usr/bin/env bash
-# This script parses an Apache access log file (apache-access.log) 
-awk '{count[$1" "$9]++} END {for (i in count) print count[i], i}' apache-access.log | sort -nr
+# This script processes the Apache log file to count occurrences of 
+# unique IP address and HTTP status code pairs.
+
+# Requirement: Output format must be "OCCURENCE_NUMBER IP HTTP_CODE", 
+# ordered from greatest to lowest number of occurrences.
+# Must use awk, cannot use while, for, until, or cut.
+
+LOG_FILE="apache-access.log"
+
+# AWK Logic:
+# 1. Process each line: print $1 (IP) and $7 (HTTP Status Code).
+# 2. Pipe the output to `sort`.
+# 3. Use `uniq -c` to count consecutive unique lines.
+# 4. Use `sort -nr` to sort the result numerically and in reverse (highest first).
+
+awk '{print $1, $7}' "$LOG_FILE" | sort | uniq -c | sort -nr
