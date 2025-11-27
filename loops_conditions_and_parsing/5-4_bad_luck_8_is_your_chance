@@ -2,13 +2,13 @@
 #sada
 a=1
 while [ $a -le 10 ]
-do	
-    if [$i -qe 4]; then
+do
+    if [ $a -eq 4 ]; then    # Corrected: space before and after brackets, use $a instead of $i
         echo "bad luck"
-    elif [$i -qe 8]; then
+    elif [ $a -eq 8 ]; then  # Corrected: space before and after brackets, use $a instead of $i
         echo "good luck"
     else
         echo "Best School"
     fi
-    a=$((a + 1))
+    a=$((a + 1))  # Increment the variable a
 done
