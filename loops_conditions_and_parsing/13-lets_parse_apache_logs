@@ -1,3 +1,20 @@
 #!/usr/bin/env bash
 # This script parses an Apache access log file (apache-access.log) 
-awk '{print $1, $6}'  apache-access.log file 
+# to display the visitor IP address and the HTTP status code for each entry.
+
+# Requirement: Must use awk, cannot use while, for, until, or cut.
+# The script assumes the apache-access.log file is in the current directory.
+
+# Apache Combined Log Format fields (based on observation of log format when $6 prints "GET):
+# $1: IP Address
+# $2: - (hyphen)
+# $3: - (hyphen)
+# $4: [Date and Time]
+# $5: "HTTP Method
+# $6: Path and Protocol"
+# $7: HTTP Status Code <--- CORRECTED FIELD
+# $8: Size of the object returned
+
+# We need $1 (IP) and $7 (HTTP Status Code).
+
+awk '{print $1, $7}' apache-access.log
