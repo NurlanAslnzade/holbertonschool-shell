@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 #as
 hour=0
-while [ $hour -le 12 ]
-do
-	echo "Hour : $hour"
-	minute=1
-	while [ $minute -le 59 ]
-	do
-		echo $minute
-		((minute++))
-	done
-	(($hour++))
-done	
+while [ $hour -le 12 ]; do
+    echo "Hour: $hour"
+
+    minute=1
+    while [ $minute -le 59 ]; do
+        echo $minute
+
+        # Daxili dövr artımı: minute++
+        minute=$((minute + 1))
+    done
+
+    # Xarici dövr artımı: hour++
+    hour=$((hour + 1))
+done
