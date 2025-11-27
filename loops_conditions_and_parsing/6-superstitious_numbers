@@ -14,7 +14,7 @@ do
 		;;
 	17)
     		echo "$a"
-                echo "bad luck from Japan"
+                echo "bad luck from Italy"
 		;;
 	*)
 		echo "$a"
