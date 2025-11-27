@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #sada
-for i in [1..10]
-do
+a=1
+while [ $a -le 10 ]
+do	
     if [$i -qe 4]; then
         echo "bad luck"
     elif [$i -qe 8]; then
@@ -9,4 +10,5 @@ do
     else
         echo "Best School"
     fi
+    a=$((a + 1))
 done
