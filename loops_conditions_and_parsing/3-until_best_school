@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+#comment
 a=1
 until [ $a -gt 10 ]
 do
     echo "Best School"
-    a=$((a+1))
+    a=$((a + 1))
 done
