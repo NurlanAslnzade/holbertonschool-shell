@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 #asda
-echo ps aux --sort=-%cpu | awk
+echo "s"
+ps aux --sort=-%cpu | awk
