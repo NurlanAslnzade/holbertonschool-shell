@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# This script runs indefinitely, but prints a specific message when it receives a SIGTERM signal, 
+# preventing termination.
+
+# Define the function to be executed when SIGTERM (Signal 15) is received.
+# The 'echo' command runs, and the script does not exit, making it "invincible" to TERM signals.
+trap 'echo "I am invincible!!!"' SIGTERM
+
+# Start the infinite loop
+while true; do
+    # Print the required phrase
+    echo "To infinity and beyond"
+    
+    # Wait for 2 seconds before the next iteration
+    sleep 2
+done
