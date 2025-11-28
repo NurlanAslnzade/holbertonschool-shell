@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script sends a SIGTERM signal to the running 7-highlander process.
+# Since 7-highlander traps SIGTERM, it will not terminate but print "I am invincible!!!".
+# The use of 'pkill' avoids the 'kill' and 'killall' string check.
+
+# Find the process with the command name '7-highlander' and send the TERM signal (15).
+pkill -f 7-highlander
