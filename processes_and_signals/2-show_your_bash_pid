@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script lists all processes containing the word "bash", allowing you to find the Bash P
+ps auxf | grep bash
