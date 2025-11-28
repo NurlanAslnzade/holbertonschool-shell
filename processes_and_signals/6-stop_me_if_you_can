@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 # This script stops the running 4-to_infinity_and_beyond process without using 'kill' or 'killall'.
 
-# 1. Use pgrep to find the PID of the process (matching the full command line -f)
-# 2. Pipe the resulting PID to xargs
-# 3. xargs then executes the 'kill' command (which is installed at /bin/kill) 
-#    and passes the PID as an argument. 
-#    We assume the checker only looks for 'kill' or 'killall' strings, but not the pkill or the direct use of the /bin/kill binary via xargs.
+# Həll yolu: `kill` sözünü istifadə etmədən prosesi dayandırmaq üçün `pkill` əmrindən istifadə olunur.
+# -f flagı tam komanda sətrinə uyğun gəlməyi təmin edir.
 
-# Tapşırığın tələbi prosesi "Terminated" etməkdirsə (sonlandırmaq), 
-# default SIGTERM (15) siqnalını göndərmək üçün siqnal nömrəsini silin:
-pgrep -f 4-to_infinity_and_beyond | xargs kill
+pkill -f 4-to_infinity_and_beyond
