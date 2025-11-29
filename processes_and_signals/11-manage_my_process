@@ -9,18 +9,22 @@ NAME="manage_my_process"
 # --- Functions ---
 
 # Function to start the daemon
+# $1: Set to 'silent' (or similar) to suppress "started" message.
 start_daemon() {
     "$DAEMON_SCRIPT" &
     
     # The PID of the last background job is captured in $!
     echo $! > "$PID_FILE"
     
-    echo "$NAME started"
+    # Only echo if it's not run silently (i.e., not from restart)
+    if [ "$1" != "silent" ]; then
+        echo "$NAME started"
+    fi
 }
 
 # Function to stop the daemon
+# $1: Set to 'silent' (or similar) to suppress "stopped" message.
 stop_daemon() {
-    SHOULD_ECHO_STOPPED=1 # Çıxışın çap olunacağını fərz edirik
     
     # Check if PID file exists
     if [ -f "$PID_FILE" ]; then
@@ -28,15 +32,14 @@ stop_daemon() {
         PID=$(cat "$PID_FILE")
         
         # Send SIGTERM (default signal) to the process
-        # We only try to kill if the PID file exists
         kill "$PID" 2>/dev/null
         
         # Delete the PID file
         rm -f "$PID_FILE"
     fi
     
-    # İndi çıxışı şərtlərdən asılı olmayaraq çap edirik (testin tələbi budur)
-    if [ "$SHOULD_ECHO_STOPPED" -eq 1 ]; then
+    # Only echo if it's not run silently (i.e., not from restart)
+    if [ "$1" != "silent" ]; then
         echo "$NAME stopped"
     fi
 }
@@ -45,19 +48,19 @@ stop_daemon() {
 
 case "$1" in
     start)
+        # Normal start: echo output
         start_daemon
         ;;
     stop)
+        # Normal stop: echo output
         stop_daemon
         ;;
     restart)
-        # Restart is stop followed by start
-        # The 'stop' inside restart should still print the 'stopped' message
-        stop_daemon
-        # We need to explicitly check if stop_daemon successfully stopped a process
-        # For simplicity, we just proceed with start as per the task note.
-        start_daemon
-        # The prompt output shows "restarted" after stop and start messages:
+        # Restart: Stop silently, Start silently, then print 'restarted'
+        stop_daemon silent
+        start_daemon silent
+        
+        # The final required output for the 'restart' command
         echo "$NAME restarted"
         ;;
     *)
