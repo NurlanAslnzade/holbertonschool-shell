@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# This script creates a PID file, runs indefinitely, and implements custom signal handlers 
+# for SIGTERM, SIGINT, and SIGQUIT, including safe cleanup and termination.
+
+PID_FILE="/var/run/myscript.pid"
+
+# --- 1. Cleanup and Exit Function (For SIGTERM and SIGQUIT) ---
+# This function is responsible for safely deleting the PID file and exiting.
+cleanup_and_exit() {
+    # Check if the PID file exists and delete it
+    if [ -f "$PID_FILE" ]; then
+        rm -f "$PID_FILE"
+        # Optional: echo "PID file $PID_FILE deleted."
+    fi
+    # Terminate the script gracefully
+    exit 0
+}
+
+# --- 2. Signal Traps ---
+
+# Trap for SIGTERM (15): Print message, cleanup, and terminate (as required by the 'Terminated' logic).
+# Note: The 'Terminated' event in the example occurs after a SIGTERM or SIGQUIT.
+trap 'echo "I hate the kill command"; cleanup_and_exit' SIGTERM
+
+# Trap for SIGQUIT (3): Cleanup and terminate (required by prompt).
+trap 'cleanup_and_exit' SIGQUIT
+
+# Trap for SIGINT (2): Print message, but do NOT terminate (required by prompt example: ^CY U no love me?!).
+# The semicolon ensures the loop continues after the message is printed.
+trap 'echo "Y U no love me?!";' SIGINT
+
+# --- 3. Write PID File ---
+# Requires sudo privileges to write to /var/run
+echo $$ > "$PID_FILE"
+# Optional: echo "PID $$ written to $PID_FILE"
+
+
+# --- 4. Main Infinite Loop ---
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
+
+# We should never reach here, but adding a final cleanup call just in case
+cleanup_and_exit
