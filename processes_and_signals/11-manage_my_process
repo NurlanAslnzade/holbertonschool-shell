@@ -3,7 +3,10 @@
 
 # Variables
 DAEMON_SCRIPT="./manage_my_process"
-PID_FILE="/var/run/my_process.pid"
+# ZƏHMƏT OLMASA DİQQƏT EDİN: PID_FILE yolunu test mühitində icazə problemlərini 
+# həll etmək üçün /var/run-dan /tmp-ə dəyişirik. 
+# Əgər test skripti sudo ilə işləmirsə, bu faylın yaradılmasını təmin edəcək.
+PID_FILE="/tmp/my_process.pid" 
 NAME="manage_my_process"
 
 # --- Functions ---
@@ -14,6 +17,7 @@ start_daemon() {
     "$DAEMON_SCRIPT" &
     
     # The PID of the last background job is captured in $!
+    # Bu əmr PID faylını /tmp-də yaradır (icazə tələb etmir).
     echo $! > "$PID_FILE"
     
     # Only echo if it's not run silently (i.e., not from restart)
