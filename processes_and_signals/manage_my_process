@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# This script is the daemon process. It continuously appends "I am alive!" 
+# to a temporary file, pausing for 2 seconds between messages.
+
+LOG_FILE="/tmp/my_process"
+
+# Start infinite loop
+while true; do
+    # Append the message to the log file
+    echo "I am alive!" >> "$LOG_FILE"
+    
+    # Wait for 2 seconds
+    sleep 2
+done
