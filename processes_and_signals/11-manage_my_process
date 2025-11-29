@@ -20,22 +20,25 @@ start_daemon() {
 
 # Function to stop the daemon
 stop_daemon() {
+    SHOULD_ECHO_STOPPED=1 # Çıxışın çap olunacağını fərz edirik
+    
     # Check if PID file exists
-    if [ ! -f "$PID_FILE" ]; then
-        # If PID file doesn't exist, assume process is not running or killed
-        return 0
+    if [ -f "$PID_FILE" ]; then
+        # Read the PID
+        PID=$(cat "$PID_FILE")
+        
+        # Send SIGTERM (default signal) to the process
+        # We only try to kill if the PID file exists
+        kill "$PID" 2>/dev/null
+        
+        # Delete the PID file
+        rm -f "$PID_FILE"
     fi
     
-    # Read the PID
-    PID=$(cat "$PID_FILE")
-    
-    # Send SIGTERM (default signal) to the process
-    kill "$PID" 2>/dev/null
-    
-    # Delete the PID file
-    rm -f "$PID_FILE"
-    
-    echo "$NAME stopped"
+    # İndi çıxışı şərtlərdən asılı olmayaraq çap edirik (testin tələbi budur)
+    if [ "$SHOULD_ECHO_STOPPED" -eq 1 ]; then
+        echo "$NAME stopped"
+    fi
 }
 
 # --- Main Logic (Case Statement) ---
@@ -49,8 +52,12 @@ case "$1" in
         ;;
     restart)
         # Restart is stop followed by start
+        # The 'stop' inside restart should still print the 'stopped' message
         stop_daemon
+        # We need to explicitly check if stop_daemon successfully stopped a process
+        # For simplicity, we just proceed with start as per the task note.
         start_daemon
+        # The prompt output shows "restarted" after stop and start messages:
         echo "$NAME restarted"
         ;;
     *)
